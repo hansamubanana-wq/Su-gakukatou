@@ -1,5 +1,7 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* 👇【ここがフォント適用部分】'Noto Sans JP' を適用 */
+    font-family: 'Noto Sans JP', sans-serif;
+    
     background-color: #f4f7f6;
     color: #333;
     max-width: 800px;
@@ -74,9 +76,8 @@ tr.highlight td {
     padding-top: 20px;
     border-top: 1px dashed #ccc;
 }
-/* --- 以前のコードの下に追加してください --- */
 
-/* 検索エリアのデザイン */
+/* 検索エリアのデザイン (前回追加分) */
 .search-container {
     background-color: #e9ecef;
     padding: 20px;

@@ -6,7 +6,7 @@
     <title>出席番号リストツール</title>
     
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#007bff">
+    <meta name="theme-color" content="#667eea">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,7 +23,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
 
@@ -35,63 +35,69 @@
         <button id="theme-toggle">🌙</button>
     </div>
 
-    <div class="search-container">
-        <h2>📅 日付を指定して調べる</h2>
-        <form method="POST">
-            <input type="date" name="target_date" required>
-            <button type="submit">調べる</button>
-        </form>
+    <div class="app-wrapper">
+        
+        <div class="search-container glass-card">
+            <h2>📅 日付を指定して調べる</h2>
+            <form method="POST">
+                <input type="date" name="target_date" required>
+                <button type="submit">GO</button>
+            </form>
+        </div>
+
+        {% if search_result %}
+        <div class="search-result-area glass-card">
+            <h1>{{ search_result.month }}月{{ search_result.day }}日 <span class="small-text">のリスト</span></h1>
+            <table id="searchTable">
+                <thead>
+                    <tr><th>順番</th><th>出席番号</th></tr>
+                </thead>
+                <tbody>
+                {% for num in search_result.results %}
+                    <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
+                        <td>{{ loop.index }}番目</td><td class="num">{{ num }}番</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <button class="copy-btn" data-target="searchTable">リストをコピー</button>
+        </div>
+        {% endif %}
+
+        <div class="main-grid">
+            
+            <section class="glass-card">
+                <h1>今日 <span class="small-text">{{ today.month }}/{{ today.day }}</span></h1>
+                <table id="todayTable">
+                    <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
+                    <tbody>
+                    {% for num in today.results %}
+                        <tr {% if loop.index == 1 %}class="highlight"{% endif %}><td>{{ loop.index }}番目</td><td class="num">{{ num }}番</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button class="copy-btn" data-target="todayTable">コピー</button>
+            </section>
+
+            <section class="glass-card">
+                <h1>翌日 <span class="small-text">{{ tomorrow.month }}/{{ tomorrow.day }}</span></h1>
+                <table id="tomorrowTable">
+                    <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
+                    <tbody>
+                    {% for num in tomorrow.results %}
+                        <tr {% if loop.index == 1 %}class="highlight"{% endif %}><td>{{ loop.index }}番目</td><td class="num">{{ num }}番</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button class="copy-btn" data-target="tomorrowTable">コピー</button>
+            </section>
+
+        </div>
     </div>
-
-    {% if search_result %}
-    <div class="search-result-area">
-        <h1>{{ search_result.month }}月{{ search_result.day }}日のリスト</h1>
-        <table id="searchTable">
-            <thead>
-                <tr><th>順番</th><th>出席番号</th></tr>
-            </thead>
-            <tbody>
-            {% for num in search_result.results %}
-                <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
-                    <td>{{ loop.index }}番目</td><td class="num">{{ num }}番</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <button class="copy-btn" data-target="searchTable">リストをコピー</button>
-        <hr class="section-spacer">
-    </div>
-    {% endif %}
-
-    <h1>今日の出席番号リスト</h1>
-    <p class="date">--- 日付: {{ today.month }}月{{ today.day }}日 ---</p>
-    
-    <table id="todayTable">
-        <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
-        <tbody>
-        {% for num in today.results %}
-            <tr {% if loop.index == 1 %}class="highlight"{% endif %}><td>{{ loop.index }}番目</td><td class="num">{{ num }}番</td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <button class="copy-btn" data-target="todayTable">リストをコピー</button>
-
-    <h1 class="section-spacer">翌日の出席番号リスト</h1>
-    <p class="date">--- 日付: {{ tomorrow.month }}月{{ tomorrow.day }}日 ---</p>
-
-    <table id="tomorrowTable">
-        <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
-        <tbody>
-        {% for num in tomorrow.results %}
-            <tr {% if loop.index == 1 %}class="highlight"{% endif %}><td>{{ loop.index }}番目</td><td class="num">{{ num }}番</td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <button class="copy-btn" data-target="tomorrowTable">リストをコピー</button>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- コピー機能 ---
+            // コピー機能
             const copyButtons = document.querySelectorAll('.copy-btn');
             copyButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -106,32 +112,30 @@
                         copyText += `${order} ${number}\n`;
                     });
                     navigator.clipboard.writeText(copyText).then(() => {
-                        button.textContent = 'コピーしました！🎉';
+                        const originalText = button.textContent;
+                        button.textContent = 'OK! ✨';
                         button.classList.add('copied');
                         setTimeout(() => {
-                            button.textContent = 'リストをコピー';
+                            button.textContent = originalText;
                             button.classList.remove('copied');
-                        }, 3000);
+                        }, 2000);
                     }).catch(err => {
                         console.error('コピー失敗:', err);
-                        button.textContent = 'コピー失敗...';
+                        button.textContent = 'Error';
                     });
                 });
             });
 
-            // --- ダークモード切り替え機能 ---
+            // ダークモード切り替え
             const toggleButton = document.getElementById('theme-toggle');
             const body = document.body;
-
             const currentTheme = localStorage.getItem('theme');
             if (currentTheme === 'dark') {
                 body.classList.add('dark-mode');
                 toggleButton.textContent = '☀️';
             }
-
             toggleButton.addEventListener('click', () => {
                 body.classList.toggle('dark-mode');
-                
                 if (body.classList.contains('dark-mode')) {
                     toggleButton.textContent = '☀️';
                     localStorage.setItem('theme', 'dark');

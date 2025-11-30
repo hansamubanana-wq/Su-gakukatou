@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日の出席番号リスト</title>
+</head>
+<body>
+    <h1>本日の出席番号リスト</h1>
+    <p>--- 日付: {{ month }}月{{ day }}日 ---</p>
+    <p>当てられる出席番号リスト（ループ周期: {{ results | length }}回）</p>
+    <hr>
+    
+    <ol>
+    {% for num in results %}
+        <li>{{ loop.index }}番目: 出席番号 {{ num }}番</li>
+    {% endfor %}
+    </ol>
+</body>
+</html>

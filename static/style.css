@@ -4,7 +4,7 @@
 :root {
     --bg-gradient: linear-gradient(-45deg, #f3f4f6, #e2e8f0, #f1f5f9);
     --text-color: #333333;
-    --glass-bg: rgba(255, 255, 255, 0.6); /* 透明度を上げて透け感をUP */
+    --glass-bg: rgba(255, 255, 255, 0.6);
     --glass-border: 1px solid rgba(255, 255, 255, 0.6);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
     
@@ -23,6 +23,24 @@ body.dark-mode {
     --accent-color: #4facfe;
     --highlight-bg: rgba(255, 215, 0, 0.2);
     --highlight-text: #ffffff;
+}
+
+/* ✨ カスタムスクロールバー (ここが新機能！) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.3);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, 0.5);
+}
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* ========================================= */
@@ -47,14 +65,13 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* ✨浮遊する光の玉 */
 .background-orbs {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* 一番後ろへ */
+    z-index: -1;
     pointer-events: none;
     overflow: hidden;
 }
@@ -62,39 +79,15 @@ body {
 .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(60px); /* ぼかし */
+    filter: blur(60px);
     opacity: 0.6;
     animation: float 20s infinite ease-in-out;
 }
 
-.orb-1 {
-    width: 400px;
-    height: 400px;
-    background: #667eea;
-    top: -100px;
-    left: -100px;
-    animation-delay: 0s;
-}
+.orb-1 { width: 400px; height: 400px; background: #667eea; top: -100px; left: -100px; animation-delay: 0s; }
+.orb-2 { width: 300px; height: 300px; background: #764ba2; bottom: -50px; right: -50px; animation-delay: -5s; }
+.orb-3 { width: 200px; height: 200px; background: #4facfe; top: 40%; left: 40%; animation-delay: -10s; }
 
-.orb-2 {
-    width: 300px;
-    height: 300px;
-    background: #764ba2;
-    bottom: -50px;
-    right: -50px;
-    animation-delay: -5s;
-}
-
-.orb-3 {
-    width: 200px;
-    height: 200px;
-    background: #4facfe;
-    top: 40%;
-    left: 40%;
-    animation-delay: -10s;
-}
-
-/* オーブの動き */
 @keyframes float {
     0%, 100% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(30px, -50px) scale(1.1); }
@@ -104,8 +97,9 @@ body {
 .app-wrapper {
     max-width: 900px;
     margin: 0 auto;
-    position: relative; /* z-indexを効かせるため */
+    position: relative;
     z-index: 1;
+    padding-bottom: 50px;
 }
 
 /* ========================================= */
@@ -113,13 +107,17 @@ body {
 /* ========================================= */
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px); /* すりガラス強度UP */
+    backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 24px;
     border: var(--glass-border);
     box-shadow: var(--glass-shadow);
     padding: 25px;
     margin-bottom: 30px;
+    
+    /* ✨ 3Dチルト用の設定 */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
 }
 
 @media (min-width: 768px) {
@@ -128,12 +126,8 @@ body {
         grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
-    .glass-card {
-        margin-bottom: 0;
-    }
-    .search-container, .search-result-area {
-        margin-bottom: 30px;
-    }
+    .glass-card { margin-bottom: 0; }
+    .search-container, .search-result-area { margin-bottom: 30px; }
 }
 
 /* ========================================= */
@@ -150,6 +144,9 @@ h1 {
     align-items: baseline;
     justify-content: center;
     gap: 10px;
+    
+    /* 3D効果で文字を少し浮かせる */
+    transform: translateZ(20px);
 }
 
 .small-text {
@@ -158,17 +155,18 @@ h1 {
     opacity: 0.7;
 }
 
-/* 検索エリア */
 .search-container { text-align: center; }
 .search-container h2 {
     margin-top: 0;
     font-size: 1.1em;
     opacity: 0.9;
+    transform: translateZ(20px);
 }
 form {
     display: flex;
     gap: 10px;
     justify-content: center;
+    transform: translateZ(30px); /* フォームを浮き上がらせる */
 }
 input[type="date"] {
     padding: 12px;
@@ -204,12 +202,12 @@ body.dark-mode button {
 }
 button:active { transform: scale(0.95); }
 
-/* テーブル */
 table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
     margin-top: 10px;
+    transform: translateZ(20px); /* テーブルを浮き上がらせる */
 }
 th {
     padding: 10px;
@@ -225,13 +223,13 @@ td {
     font-weight: 500;
     transition: transform 0.2s;
 }
-body.dark-mode td {
-    background: rgba(255,255,255,0.08);
-}
+body.dark-mode td { background: rgba(255,255,255,0.08); }
 tr:hover td {
-    transform: scale(1.02); /* ホバー時に少し浮く */
+    transform: scale(1.02);
     z-index: 10;
+    background: rgba(255,255,255,0.8);
 }
+body.dark-mode tr:hover td { background: rgba(255,255,255,0.15); }
 
 tr td:first-child { border-radius: 10px 0 0 10px; }
 tr td:last-child { border-radius: 0 10px 10px 0; }
@@ -248,23 +246,23 @@ tr.highlight td:first-child::before {
     margin-right: 5px;
 }
 
-/* コピーボタン */
 .copy-btn {
     display: block;
     width: 100%;
     margin-top: 20px;
     padding: 12px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
     border: 1px solid var(--text-color);
     color: var(--text-color);
     border-radius: 30px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
+    transform: translateZ(30px);
 }
 .copy-btn:hover {
     background: var(--text-color);
-    color: var(--glass-bg);
+    color: var(--bg-color);
 }
 .copy-btn.copied {
     background: #4cd964;
@@ -272,7 +270,6 @@ tr.highlight td:first-child::before {
     color: white;
 }
 
-/* テーマ切り替えボタン */
 .theme-switch-wrapper {
     position: fixed;
     top: 20px;
@@ -294,7 +291,6 @@ tr.highlight td:first-child::before {
     padding: 0;
 }
 
-/* アニメーション */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }

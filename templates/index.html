@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 </head>
 <body>
 
@@ -45,7 +46,7 @@
 
     <div class="app-wrapper">
         
-        <div class="search-container glass-card">
+        <div class="search-container glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
             <h2>📅 日付を指定して調べる</h2>
             <form method="POST">
                 <input type="date" name="target_date" required>
@@ -54,7 +55,7 @@
         </div>
 
         {% if search_result %}
-        <div class="search-result-area glass-card">
+        <div class="search-result-area glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
             <h1>{{ search_result.month }}月{{ search_result.day }}日 <span class="small-text">のリスト</span></h1>
             <table id="searchTable">
                 <thead>
@@ -74,7 +75,7 @@
 
         <div class="main-grid">
             
-            <section class="glass-card">
+            <section class="glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
                 <h1>今日 <span class="small-text">{{ today.month }}/{{ today.day }}</span></h1>
                 <table id="todayTable">
                     <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
@@ -87,7 +88,7 @@
                 <button class="copy-btn" data-target="todayTable">コピー</button>
             </section>
 
-            <section class="glass-card">
+            <section class="glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
                 <h1>翌日 <span class="small-text">{{ tomorrow.month }}/{{ tomorrow.day }}</span></h1>
                 <table id="tomorrowTable">
                     <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
@@ -124,7 +125,6 @@
                         button.textContent = 'OK! ✨';
                         button.classList.add('copied');
                         
-                        // ✨紙吹雪発射！ (ボタンの位置から飛ばす)
                         const rect = button.getBoundingClientRect();
                         const x = (rect.left + rect.width / 2) / window.innerWidth;
                         const y = (rect.top + rect.height / 2) / window.innerHeight;

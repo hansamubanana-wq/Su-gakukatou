@@ -1,27 +1,22 @@
 /* ========================================= */
-/* 🎨 1. 色と変数の設定 (グラスモーフィズム用) */
+/* 🎨 1. 色と変数の設定                      */
 /* ========================================= */
 :root {
-    /* ライトモード */
-    --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    --bg-gradient: linear-gradient(-45deg, #f3f4f6, #e2e8f0, #f1f5f9);
     --text-color: #333333;
-    /* ガラスの質感 */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.4);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    --glass-bg: rgba(255, 255, 255, 0.6); /* 透明度を上げて透け感をUP */
+    --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
     
-    --accent-color: #23a6d5;
-    --highlight-bg: rgba(255, 215, 0, 0.3); /* ゴールドの透け感 */
+    --accent-color: #667eea;
+    --highlight-bg: rgba(255, 215, 0, 0.3);
     --highlight-text: #5a3e00;
 }
 
-/* ダークモード */
 body.dark-mode {
-    /* ダークモード用の背景（少し暗めのオーロラ） */
-    --bg-gradient: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #533483);
+    --bg-gradient: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a);
     --text-color: #f0f0f0;
-    /* 黒ガラスの質感 */
-    --glass-bg: rgba(20, 20, 20, 0.75);
+    --glass-bg: rgba(20, 20, 20, 0.6);
     --glass-border: 1px solid rgba(255, 255, 255, 0.1);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     
@@ -31,7 +26,7 @@ body.dark-mode {
 }
 
 /* ========================================= */
-/* 🌊 2. 背景アニメーション                  */
+/* 🌊 2. 背景とオーブ                        */
 /* ========================================= */
 body {
     font-family: 'Noto Sans JP', sans-serif;
@@ -39,13 +34,11 @@ body {
     padding: 20px;
     min-height: 100vh;
     color: var(--text-color);
-    
-    /* 動くグラデーション背景 */
     background: var(--bg-gradient);
     background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    
-    -webkit-font-smoothing: antialiased;
+    animation: gradientBG 20s ease infinite;
+    position: relative;
+    overflow-x: hidden;
 }
 
 @keyframes gradientBG {
@@ -54,35 +47,89 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* コンテンツ幅の制限 */
+/* ✨浮遊する光の玉 */
+.background-orbs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 一番後ろへ */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px); /* ぼかし */
+    opacity: 0.6;
+    animation: float 20s infinite ease-in-out;
+}
+
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: #667eea;
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 300px;
+    height: 300px;
+    background: #764ba2;
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 200px;
+    height: 200px;
+    background: #4facfe;
+    top: 40%;
+    left: 40%;
+    animation-delay: -10s;
+}
+
+/* オーブの動き */
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
 .app-wrapper {
-    max-width: 900px; /* PCでは少し広く */
+    max-width: 900px;
     margin: 0 auto;
+    position: relative; /* z-indexを効かせるため */
+    z-index: 1;
 }
 
 /* ========================================= */
-/* 🧊 3. グラスモーフィズム (ガラスのカード) */
+/* 🧊 3. グラスモーフィズム                  */
 /* ========================================= */
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px); /* すりガラス効果 */
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 20px;
+    backdrop-filter: blur(16px); /* すりガラス強度UP */
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px;
     border: var(--glass-border);
     box-shadow: var(--glass-shadow);
     padding: 25px;
     margin-bottom: 30px;
 }
 
-/* PCレイアウト：横並び */
 @media (min-width: 768px) {
     .main-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 2列 */
+        grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
     .glass-card {
-        margin-bottom: 0; /* グリッド内の余白はgapで調整 */
+        margin-bottom: 0;
     }
     .search-container, .search-result-area {
         margin-bottom: 30px;
@@ -92,8 +139,6 @@ body {
 /* ========================================= */
 /* 📝 4. 各要素のデザイン                    */
 /* ========================================= */
-
-/* タイトル */
 h1 {
     font-size: 1.4em;
     text-align: center;
@@ -114,9 +159,7 @@ h1 {
 }
 
 /* 検索エリア */
-.search-container {
-    text-align: center;
-}
+.search-container { text-align: center; }
 .search-container h2 {
     margin-top: 0;
     font-size: 1.1em;
@@ -130,27 +173,34 @@ form {
 input[type="date"] {
     padding: 12px;
     border-radius: 12px;
-    border: none;
-    background: rgba(255,255,255,0.5); /* 半透明 */
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.8);
     color: #333;
     font-family: inherit;
     font-weight: bold;
     outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 body.dark-mode input[type="date"] {
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.5);
     color: white;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 button {
     padding: 12px 20px;
-    background: var(--accent-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
     border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+}
+body.dark-mode button {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    box-shadow: 0 4px 10px rgba(0, 242, 254, 0.3);
 }
 button:active { transform: scale(0.95); }
 
@@ -158,10 +208,9 @@ button:active { transform: scale(0.95); }
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 8px; /* 行の間隔を空ける */
+    border-spacing: 0 8px;
     margin-top: 10px;
 }
-
 th {
     padding: 10px;
     font-size: 0.85em;
@@ -169,28 +218,29 @@ th {
     opacity: 0.6;
     text-align: center;
 }
-
 td {
-    background: rgba(255,255,255,0.4); /* 行ごとの薄いガラス */
+    background: rgba(255,255,255,0.5);
     padding: 12px;
     text-align: center;
     font-weight: 500;
+    transition: transform 0.2s;
 }
 body.dark-mode td {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.08);
+}
+tr:hover td {
+    transform: scale(1.02); /* ホバー時に少し浮く */
+    z-index: 10;
 }
 
-/* 行の角丸処理 */
 tr td:first-child { border-radius: 10px 0 0 10px; }
 tr td:last-child { border-radius: 0 10px 10px 0; }
 
-/* 👑 1位のデザイン */
 tr.highlight td {
     background: var(--highlight-bg);
     color: var(--highlight-text);
     font-weight: 900;
     font-size: 1.1em;
-    position: relative;
     border: 1px solid rgba(255, 215, 0, 0.3);
 }
 tr.highlight td:first-child::before {
@@ -204,17 +254,17 @@ tr.highlight td:first-child::before {
     width: 100%;
     margin-top: 20px;
     padding: 12px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.2);
     border: 1px solid var(--text-color);
     color: var(--text-color);
-    border-radius: 30px; /* 丸ボタン */
+    border-radius: 30px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
 }
 .copy-btn:hover {
     background: var(--text-color);
-    color: var(--bg-color); /* 反転 */
+    color: var(--glass-bg);
 }
 .copy-btn.copied {
     background: #4cd964;
@@ -244,24 +294,13 @@ tr.highlight td:first-child::before {
     padding: 0;
 }
 
-/* ========================================= */
-/* ✨ アニメーション設定                     */
-/* ========================================= */
+/* アニメーション */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
-.glass-card {
-    animation: fadeInUp 0.6s ease-out forwards;
-}
-
-tbody tr {
-    opacity: 0;
-    animation: fadeInUp 0.4s ease-out forwards;
-}
-
-/* 順番に表示 */
+.glass-card { animation: fadeInUp 0.6s ease-out forwards; }
+tbody tr { opacity: 0; animation: fadeInUp 0.4s ease-out forwards; }
 tbody tr:nth-child(1) { animation-delay: 0.1s; }
 tbody tr:nth-child(2) { animation-delay: 0.15s; }
 tbody tr:nth-child(3) { animation-delay: 0.2s; }

@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -23,7 +24,7 @@
     {% if search_result %}
     <div class="search-result-area">
         <h1>{{ search_result.month }}月{{ search_result.day }}日のリスト</h1>
-        <table>
+        <table id="searchTable">
             <thead>
                 <tr>
                     <th>順番</th>
@@ -34,11 +35,12 @@
             {% for num in search_result.results %}
                 <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
                     <td>{{ loop.index }}番目</td>
-                    <td>{{ num }}番</td>
+                    <td class="num">{{ num }}番</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <button class="copy-btn" data-target="searchTable">リストをコピー</button>
         <hr class="section-spacer">
     </div>
     {% endif %}
@@ -46,7 +48,7 @@
     <h1>今日の出席番号リスト</h1>
     <p class="date">--- 日付: {{ today.month }}月{{ today.day }}日 ---</p>
     
-    <table>
+    <table id="todayTable">
         <thead>
             <tr>
                 <th>順番</th>
@@ -57,16 +59,18 @@
         {% for num in today.results %}
             <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
                 <td>{{ loop.index }}番目</td>
-                <td>{{ num }}番</td>
+                <td class="num">{{ num }}番</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <button class="copy-btn" data-target="todayTable">リストをコピー</button>
+
 
     <h1 class="section-spacer">翌日の出席番号リスト</h1>
     <p class="date">--- 日付: {{ tomorrow.month }}月{{ tomorrow.day }}日 ---</p>
 
-    <table>
+    <table id="tomorrowTable">
         <thead>
             <tr>
                 <th>順番</th>
@@ -77,11 +81,54 @@
         {% for num in tomorrow.results %}
             <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
                 <td>{{ loop.index }}番目</td>
-                <td>{{ num }}番</td>
+                <td class="num">{{ num }}番</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <button class="copy-btn" data-target="tomorrowTable">リストをコピー</button>
     
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 対象のテーブルIDを取得
+                    const targetId = button.getAttribute('data-target');
+                    const table = document.getElementById(targetId);
+
+                    if (!table) return;
+
+                    let copyText = `--- ${targetId.includes('tomorrow') ? '翌日' : targetId.includes('today') ? '今日' : '検索結果'}の出席番号リスト ---\n`;
+                    
+                    // テーブルの各行から番号を取得し、整形
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach((row, index) => {
+                        const order = row.querySelector('td:first-child').textContent; // 順番
+                        const number = row.querySelector('td:last-child').textContent; // 出席番号
+                        copyText += `${order} ${number}\n`;
+                    });
+
+                    // クリップボードにコピー
+                    navigator.clipboard.writeText(copyText).then(() => {
+                        // 成功したらボタンのテキストを変更
+                        button.textContent = 'コピーしました！🎉';
+                        button.classList.add('copied');
+                        
+                        // 3秒後に元に戻す
+                        setTimeout(() => {
+                            button.textContent = 'リストをコピー';
+                            button.classList.remove('copied');
+                        }, 3000);
+                    }).catch(err => {
+                        console.error('コピー失敗:', err);
+                        button.textContent = 'コピー失敗...';
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,5 +1,4 @@
 body {
-    /* 👇【ここがフォント適用部分】'Noto Sans JP' を適用 */
     font-family: 'Noto Sans JP', sans-serif;
     
     background-color: #f4f7f6;
@@ -77,7 +76,7 @@ tr.highlight td {
     border-top: 1px dashed #ccc;
 }
 
-/* 検索エリアのデザイン (前回追加分) */
+/* 検索エリアのデザイン (以前追加分) */
 .search-container {
     background-color: #e9ecef;
     padding: 20px;
@@ -120,4 +119,36 @@ button:hover {
 .search-result-area h1 {
     color: #28a745; /* タイトルも緑に */
     border-bottom: 3px solid #28a745;
+}
+
+/* ✨リストコピーボタンのデザイン✨ */
+.copy-btn {
+    display: block; /* 1行を占有 */
+    width: 100%; /* 横幅いっぱい */
+    margin-top: 15px; /* テーブルとの間にスペース */
+    padding: 12px;
+    background-color: #007bff; /* 青色（メインカラー） */
+    color: white;
+    font-weight: bold;
+    font-size: 1.05em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+    background-color: #0056b3;
+}
+
+/* コピー成功時のフィードバック */
+.copy-btn.copied {
+    background-color: #28a745; /* 成功時の緑色 */
+    animation: pulse 0.5s 3; /* アニメーションを追加 */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
 }

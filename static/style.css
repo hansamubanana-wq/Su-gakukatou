@@ -1,19 +1,54 @@
+/* 色の定義（変数） */
+:root {
+    /* ライトモード（デフォルト） */
+    --bg-color: #f4f7f6;
+    --text-color: #333333;
+    --container-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --accent-color: #007bff; /* 青 */
+    --accent-hover: #0056b3;
+    --border-color: #e0e0e0;
+    --row-odd-bg: #f8f8f8;
+    --highlight-bg: #ffc107; /* 黄色 */
+    --highlight-text: #333333;
+    --search-area-bg: #e9ecef;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ダークモード時の色定義 */
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --container-bg: #1e1e1e;
+    --input-bg: #2d2d2d;
+    --input-border: #444444;
+    --accent-color: #4da3ff; /* 暗い背景でも見やすい明るめの青 */
+    --accent-hover: #1a73e8;
+    --border-color: #333333;
+    --row-odd-bg: #252525;
+    --highlight-bg: #b38600; /* 暗めの黄色 */
+    --highlight-text: #ffffff;
+    --search-area-bg: #2d2d2d;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
 body {
     font-family: 'Noto Sans JP', sans-serif;
-    
-    background-color: #f4f7f6;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: background-color 0.3s, color 0.3s; /* 色がふわっと変わるアニメーション */
 }
 
 h1 {
-    color: #007bff;
+    color: var(--accent-color);
     text-align: center;
-    border-bottom: 3px solid #007bff;
+    border-bottom: 3px solid var(--accent-color);
     padding-bottom: 10px;
     margin-bottom: 25px;
 }
@@ -21,14 +56,14 @@ h1 {
 p.date {
     text-align: center;
     font-size: 1.2em;
-    color: #333;
     font-weight: bold;
     margin-bottom: 30px;
+    color: var(--text-color);
 }
 
 hr {
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--border-color);
     margin: 20px 0;
 }
 
@@ -40,62 +75,65 @@ table {
 }
 
 th, td {
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     padding: 10px;
     text-align: center;
     font-size: 1em;
 }
 
 th {
-    background-color: #007bff;
+    background-color: var(--accent-color);
     color: white;
     font-weight: 600;
 }
 
 td {
-    background-color: #ffffff;
+    background-color: var(--container-bg);
+    color: var(--text-color);
 }
 
 /* 奇数行の背景色 */
 tr:nth-child(even) td {
-    background-color: #f8f8f8;
+    background-color: var(--row-odd-bg);
 }
 
 /* 最重要行（1番目）の強調 */
 tr.highlight td {
-    background-color: #ffc107; /* 警告色で目立たせる */
+    background-color: var(--highlight-bg);
     font-weight: bold;
-    color: #333;
-    border: 2px solid #e0a800;
+    color: var(--highlight-text);
+    border: 2px solid var(--highlight-bg);
 }
 
 /* セクション間のスペース調整 */
 .section-spacer {
     margin-top: 60px;
     padding-top: 20px;
-    border-top: 1px dashed #ccc;
+    border-top: 1px dashed var(--border-color);
 }
 
-/* 検索エリアのデザイン (以前追加分) */
+/* 検索エリアのデザイン */
 .search-container {
-    background-color: #e9ecef;
+    background-color: var(--search-area-bg);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     margin-bottom: 40px;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--border-color);
 }
 
 .search-container h2 {
     margin-top: 0;
-    color: #495057;
+    color: var(--text-color);
     font-size: 1.2em;
 }
 
 input[type="date"] {
     padding: 10px;
     font-size: 1em;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
     border-radius: 5px;
     margin-right: 10px;
 }
@@ -117,17 +155,17 @@ button:hover {
 
 /* 検索結果を目立たせる */
 .search-result-area h1 {
-    color: #28a745; /* タイトルも緑に */
+    color: #28a745; 
     border-bottom: 3px solid #28a745;
 }
 
-/* ✨リストコピーボタンのデザイン✨ */
+/* リストコピーボタンのデザイン */
 .copy-btn {
-    display: block; /* 1行を占有 */
-    width: 100%; /* 横幅いっぱい */
-    margin-top: 15px; /* テーブルとの間にスペース */
+    display: block; 
+    width: 100%; 
+    margin-top: 15px; 
     padding: 12px;
-    background-color: #007bff; /* 青色（メインカラー） */
+    background-color: var(--accent-color); 
     color: white;
     font-weight: bold;
     font-size: 1.05em;
@@ -138,17 +176,34 @@ button:hover {
 }
 
 .copy-btn:hover {
-    background-color: #0056b3;
+    background-color: var(--accent-hover);
 }
 
 /* コピー成功時のフィードバック */
 .copy-btn.copied {
-    background-color: #28a745; /* 成功時の緑色 */
-    animation: pulse 0.5s 3; /* アニメーションを追加 */
+    background-color: #28a745; 
+    animation: pulse 0.5s 3; 
 }
 
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.02); }
     100% { transform: scale(1); }
+}
+
+/* テーマ切り替えボタンのデザイン */
+.theme-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+#theme-toggle {
+    background: none;
+    border: 2px solid var(--border-color);
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: var(--container-bg);
 }

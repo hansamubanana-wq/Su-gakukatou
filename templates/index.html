@@ -15,6 +15,10 @@
 </head>
 <body>
 
+    <div class="theme-switch-wrapper">
+        <button id="theme-toggle">🌙</button>
+    </div>
+
     <div class="search-container">
         <h2>📅 日付を指定して調べる</h2>
         <form method="POST">
@@ -71,6 +75,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- コピー機能 ---
             const copyButtons = document.querySelectorAll('.copy-btn');
             copyButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -96,6 +101,30 @@
                         button.textContent = 'コピー失敗...';
                     });
                 });
+            });
+
+            // --- ✨ダークモード切り替え機能 ---
+            const toggleButton = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            // 保存された設定を読み込む
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                body.classList.add('dark-mode');
+                toggleButton.textContent = '☀️';
+            }
+
+            toggleButton.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                
+                // アイコンの切り替えと設定の保存
+                if (body.classList.contains('dark-mode')) {
+                    toggleButton.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    toggleButton.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                }
             });
         });
     </script>

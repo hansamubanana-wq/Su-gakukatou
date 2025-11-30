@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>今日の出席番号リスト</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>本日の出席番号リスト</h1>
+    <h1>今日の出席番号リスト</h1>
     <p>--- 日付: {{ month }}月{{ day }}日 ---</p>
     <p>当てられる出席番号リスト（ループ周期: {{ results | length }}回）</p>
     <hr>

@@ -3,11 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今日の出席番号リスト</title>
+    <title>出席番号リストツール</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    
+
+    <div class="search-container">
+        <h2>📅 日付を指定して調べる</h2>
+        <form method="POST">
+            <input type="date" name="target_date" required>
+            <button type="submit">調べる</button>
+        </form>
+    </div>
+
+    {% if search_result %}
+    <div class="search-result-area">
+        <h1>{{ search_result.month }}月{{ search_result.day }}日のリスト</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>順番</th>
+                    <th>出席番号</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for num in search_result.results %}
+                <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
+                    <td>{{ loop.index }}番目</td>
+                    <td>{{ num }}番</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <hr class="section-spacer">
+    </div>
+    {% endif %}
+
     <h1>今日の出席番号リスト</h1>
     <p class="date">--- 日付: {{ today.month }}月{{ today.day }}日 ---</p>
     

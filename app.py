@@ -3,7 +3,6 @@ import datetime
 
 app = Flask(__name__, static_folder='static')
 
-# 日付を受け取って、その日の出席番号リストを生成する新しい関数
 def generate_list(target_date):
     # 1. 日付の取得と初期値の設定
     month = target_date.month
@@ -14,9 +13,10 @@ def generate_list(target_date):
     b = day
 
     # 2. 初回計算
-    # 剰余が0なら1番、剰余が38なら39番となるシンプルなロジックを採用
     initial_remainder = (a * b) % MAX_NUMBER 
-    R_1 = initial_remainder + 1
+    # 🌟 これが、次の番号に足していく値（あなたの例では 7）になります
+    remainder_step = initial_remainder 
+    R_1 = remainder_step + 1 # 最初の出席番号
 
     # 3. ループの生成
     results = []
@@ -26,15 +26,16 @@ def generate_list(target_date):
         # 現在の番号をリストに追加
         results.append(current_number)
 
-        # 次の番号の計算: 4ずつ減らす
-        next_number = current_number - 4
+        # 🌟 【ここを修正】次の番号の計算: 減算ではなく、剰余のステップ値 (remainder_step) を足す
+        next_number = current_number + remainder_step 
 
-        # 0 または負の数になった場合、MAX_NUMBER (39) を足してループさせる
-        if next_number <= 0:
-            next_number += MAX_NUMBER
+        # 🌟 【ここを修正】MAX_NUMBER (39) を超えた場合、39を引いてループさせる
+        if next_number > MAX_NUMBER:
+            next_number -= MAX_NUMBER 
         
         current_number = next_number
-
+    
+    # ... (以下、変更なし)
     # 4. 結果を辞書形式で返す
     return {
         'month': month,
@@ -44,23 +45,19 @@ def generate_list(target_date):
 
 @app.route('/')
 def index():
-    # 1. 今日の日付を取得 (タイムゾーンはRenderの環境変数で設定済み)
+    # ... (変更なし)
+    # 以下の部分は前回と変更ありません。
     today = datetime.date.today()
-    
-    # 2. 翌日の日付を取得
     tomorrow = today + datetime.timedelta(days=1)
     
-    # 3. それぞれの日付でリストを生成
     today_data = generate_list(today)
     tomorrow_data = generate_list(tomorrow)
 
-    # 4. HTMLに両方のデータを渡す
     return render_template(
         'index.html',
         today=today_data,
         tomorrow=tomorrow_data
     )
 
-# ローカルテスト用コード
 if __name__ == '__main__':
     app.run(debug=True)

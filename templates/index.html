@@ -10,25 +10,43 @@
     
     <h1>今日の出席番号リスト</h1>
     <p class="date">--- 日付: {{ today.month }}月{{ today.day }}日 ---</p>
-    <p>当てられる出席番号リスト（ループ周期: {{ today.results | length }}回）</p>
-    <hr>
     
-    <ol>
-    {% for num in today.results %}
-        <li>{{ loop.index }}番目: 出席番号 {{ num }}番</li>
-    {% endfor %}
-    </ol>
+    <table>
+        <thead>
+            <tr>
+                <th>順番</th>
+                <th>出席番号</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for num in today.results %}
+            <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
+                <td>{{ loop.index }}番目</td>
+                <td>{{ num }}番</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    <h1 style="margin-top: 50px;">翌日の出席番号リスト</h1>
+    <h1 class="section-spacer">翌日の出席番号リスト</h1>
     <p class="date">--- 日付: {{ tomorrow.month }}月{{ tomorrow.day }}日 ---</p>
-    <p>当てられる出席番号リスト（ループ周期: {{ tomorrow.results | length }}回）</p>
-    <hr>
-    
-    <ol>
-    {% for num in tomorrow.results %}
-        <li>{{ loop.index }}番目: 出席番号 {{ num }}番</li>
-    {% endfor %}
-    </ol>
+
+    <table>
+        <thead>
+            <tr>
+                <th>順番</th>
+                <th>出席番号</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for num in tomorrow.results %}
+            <tr {% if loop.index == 1 %}class="highlight"{% endif %}>
+                <td>{{ loop.index }}番目</td>
+                <td>{{ num }}番</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     
 </body>
 </html>

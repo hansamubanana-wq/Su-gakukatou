@@ -108,7 +108,7 @@ body {
     transform: perspective(1000px);
 }
 
-/* ✨ 閉じるボタンのデザイン */
+/* ✨ 閉じるボタンのデザイン (修正済み) */
 .close-btn {
     position: absolute;
     top: 15px;
@@ -129,11 +129,15 @@ body {
     opacity: 0.6;
     transition: all 0.2s;
     box-shadow: none !important; /* デフォルトの影を消す */
+    
+    /* ✨ここが今回の修正点！ボタンを手前に持ってくる設定 */
+    z-index: 20;
+    transform: translateZ(50px); 
 }
 .close-btn:hover {
     background-color: rgba(0, 0, 0, 0.05);
     opacity: 1;
-    transform: scale(1.1);
+    transform: translateZ(50px) scale(1.1); /* ホバー時も手前位置をキープ */
 }
 body.dark-mode .close-btn:hover {
     background-color: rgba(255, 255, 255, 0.1);

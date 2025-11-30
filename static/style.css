@@ -1,278 +1,270 @@
 /* ========================================= */
-/* 🎨 1. 色の設定 (ダークモード対応)         */
+/* 🎨 1. 色と変数の設定 (モダン配色)         */
 /* ========================================= */
 :root {
-    /* ライトモード（デフォルト） */
-    --bg-color: #f4f7f6;
+    /* ライトモード */
+    --bg-color: #f0f2f5; /* 少し青みがかったライトグレー */
     --text-color: #333333;
-    --container-bg: #ffffff;
-    --input-bg: #ffffff;
-    --input-border: #cccccc;
-    --accent-color: #007bff; /* 青 */
-    --accent-hover: #0056b3;
-    --border-color: #e0e0e0;
-    --row-odd-bg: #f8f8f8;
-    --highlight-bg: #ffc107; /* 黄色 */
-    --highlight-text: #333333;
-    --search-area-bg: #e9ecef;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --card-bg: #ffffff;
+    --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* おしゃれな紫〜青 */
+    --accent-color: #667eea;
+    --border-radius: 16px;
+    --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 0 2px 4px 0 rgba(0,0,0, 0.06);
+    --input-bg: #f7f9fc;
+    --gold-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%); /* 1位用のゴールド */
+    --gold-text: #5a3e00;
 }
 
-/* ダークモード時の色定義 */
+/* ダークモード */
 body.dark-mode {
     --bg-color: #121212;
     --text-color: #e0e0e0;
-    --container-bg: #1e1e1e;
+    --card-bg: #1e1e1e;
+    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* ネオンブルー */
+    --accent-color: #4facfe;
+    --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    --shadow-inset: inset 0 2px 4px 0 rgba(0,0,0, 0.5);
     --input-bg: #2d2d2d;
-    --input-border: #444444;
-    --accent-color: #4da3ff; /* 暗い背景でも見やすい明るめの青 */
-    --accent-hover: #1a73e8;
-    --border-color: #333333;
-    --row-odd-bg: #252525;
-    --highlight-bg: #b38600; /* 暗めの黄色 */
-    --highlight-text: #ffffff;
-    --search-area-bg: #2d2d2d;
-    --shadow-color: rgba(0, 0, 0, 0.5);
+    --gold-gradient: linear-gradient(135deg, #b88746 0%, #fdf5a6 100%); /* ダークゴールド */
+    --gold-text: #3e2b00;
 }
 
 /* ========================================= */
-/* 📐 2. 基本デザイン                        */
+/* 📐 2. ベースレイアウト                    */
 /* ========================================= */
 body {
     font-family: 'Noto Sans JP', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    max-width: 800px;
-    margin: 40px auto;
+    max-width: 600px; /* スマホで見やすい幅に調整 */
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s ease;
+    -webkit-font-smoothing: antialiased; /* 文字を滑らかに */
 }
 
+/* カード共通スタイル（背景の白い箱） */
+.search-container, 
+.search-result-area,
+table, /* テーブル自体をカードに見立てる */
+.copy-btn {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 30px;
+    overflow: hidden; /* 角丸からはみ出さないように */
+    border: none; /* 枠線を消す */
+}
+
+/* タイトルまわり */
 h1 {
-    color: var(--accent-color);
+    font-size: 1.5em;
     text-align: center;
-    border-bottom: 3px solid var(--accent-color);
-    padding-bottom: 10px;
-    margin-bottom: 25px;
+    margin: 40px 0 10px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* 文字だけグラデーション */
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border: none; /* 下線を削除 */
 }
 
 p.date {
     text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 30px;
+    font-size: 0.9em;
     color: var(--text-color);
+    opacity: 0.7;
+    margin-bottom: 20px;
 }
 
 hr {
-    border: none;
-    border-top: 1px solid var(--border-color);
-    margin: 20px 0;
+    display: none; /* 古い区切り線は削除 */
 }
 
-/* テーブルスタイル */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid var(--border-color);
-    padding: 10px;
-    text-align: center;
-    font-size: 1em;
-}
-
-th {
-    background-color: var(--accent-color);
-    color: white;
-    font-weight: 600;
-}
-
-td {
-    background-color: var(--container-bg);
-    color: var(--text-color);
-}
-
-/* 奇数行の背景色 */
-tr:nth-child(even) td {
-    background-color: var(--row-odd-bg);
-}
-
-/* 最重要行（1番目）の強調 */
-tr.highlight td {
-    background-color: var(--highlight-bg);
-    font-weight: bold;
-    color: var(--highlight-text);
-    border: 2px solid var(--highlight-bg);
-}
-
-/* セクション間のスペース調整 */
-.section-spacer {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px dashed var(--border-color);
-}
-
-/* 検索エリアのデザイン */
+/* ========================================= */
+/* 🔍 検索エリア                             */
+/* ========================================= */
 .search-container {
-    background-color: var(--search-area-bg);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 25px;
     text-align: center;
-    margin-bottom: 40px;
-    border: 1px solid var(--border-color);
 }
 
 .search-container h2 {
-    margin-top: 0;
-    color: var(--text-color);
-    font-size: 1.2em;
+    font-size: 1em;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 input[type="date"] {
-    padding: 10px;
+    padding: 12px;
     font-size: 1em;
-    border: 1px solid var(--input-border);
+    border: none;
+    border-radius: 12px;
     background-color: var(--input-bg);
     color: var(--text-color);
-    border-radius: 5px;
-    margin-right: 10px;
+    box-shadow: var(--shadow-inset);
+    outline: none;
+    font-family: inherit;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 1em;
-    background-color: #28a745; /* 緑色 */
+    background: var(--accent-gradient);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* ========================================= */
+/* 📊 リスト（テーブル）デザイン             */
+/* ========================================= */
+table {
+    width: 100%;
+    border-collapse: collapse; /* 隙間をなくす */
+    margin-top: 0;
+}
+
+thead {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+th {
+    padding: 15px;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+    background: transparent; /* グラデーションを活かす */
+    border: none;
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,0.05); /* うっすらとした線 */
+}
+
+/* 最後の行の線は消す */
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* 偶数行の色付けをやめて、スッキリさせる */
+tr:nth-child(even) td {
+    background-color: transparent;
+}
+
+/* 👑 1位のスペシャル演出 */
+tr.highlight td {
+    background: var(--gold-gradient);
+    color: var(--gold-text);
+    font-weight: bold;
+    border: none;
+    position: relative;
+    font-size: 1.1em; /* 少し大きく */
+}
+
+/* 1位の行の左端に王冠をつける（擬似要素） */
+tr.highlight td:first-child::before {
+    content: "👑 ";
+}
+
+/* ========================================= */
+/* 📋 コピーボタン                           */
+/* ========================================= */
+.copy-btn {
+    display: block;
+    width: 100%;
+    margin-top: -20px; /* テーブルとくっつける */
+    margin-bottom: 50px;
+    padding: 15px;
+    background: var(--card-bg);
+    color: var(--accent-color);
+    font-weight: bold;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-radius: 0 0 16px 16px; /* 下側だけ丸く */
+    box-shadow: var(--shadow-soft);
     cursor: pointer;
     transition: background-color 0.2s;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-/* 検索結果を目立たせる */
-.search-result-area h1 {
-    color: #28a745; 
-    border-bottom: 3px solid #28a745;
-}
-
-/* リストコピーボタンのデザイン */
-.copy-btn {
-    display: block; 
-    width: 100%; 
-    margin-top: 15px; 
-    padding: 12px;
-    background-color: var(--accent-color); 
-    color: white;
-    font-weight: bold;
-    font-size: 1.05em;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    text-align: center;
 }
 
 .copy-btn:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--input-bg);
 }
 
-/* コピー成功時のフィードバック */
 .copy-btn.copied {
-    background-color: #28a745; 
-    animation: pulse 0.5s 3; 
+    background: #4cd964; /* 成功時の緑 */
+    color: white;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-/* テーマ切り替えボタンのデザイン */
+/* ========================================= */
+/* 🌙 テーマ切り替えボタン                   */
+/* ========================================= */
 .theme-switch-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
+    position: fixed; /* 画面右下に固定 */
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
 }
 
 #theme-toggle {
-    background: none;
-    border: 2px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     font-size: 1.5em;
     cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background-color: var(--container-bg);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+#theme-toggle:hover {
+    transform: rotate(15deg) scale(1.1);
 }
 
 /* ========================================= */
-/* ✨ 3. アニメーション設定                  */
+/* ✨ アニメーション                         */
 /* ========================================= */
-
-/* リストの行がふわっと浮き上がるアニメーション */
-@keyframes slideIn {
+@keyframes slideUpFade {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(15px) scale(0.98);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-/* テーブルの行（tr）の初期状態を隠す */
 tbody tr {
     opacity: 0;
-    animation: slideIn 0.4s ease-out forwards;
+    animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-/* 各行の遅延設定 */
+/* 順番に表示させる遅延設定 */
 tbody tr:nth-child(1)  { animation-delay: 0.05s; }
-tbody tr:nth-child(2)  { animation-delay: 0.10s; }
-tbody tr:nth-child(3)  { animation-delay: 0.15s; }
-tbody tr:nth-child(4)  { animation-delay: 0.20s; }
-tbody tr:nth-child(5)  { animation-delay: 0.25s; }
-tbody tr:nth-child(6)  { animation-delay: 0.30s; }
-tbody tr:nth-child(7)  { animation-delay: 0.35s; }
-tbody tr:nth-child(8)  { animation-delay: 0.40s; }
-tbody tr:nth-child(9)  { animation-delay: 0.45s; }
-tbody tr:nth-child(10) { animation-delay: 0.50s; }
-tbody tr:nth-child(11) { animation-delay: 0.55s; }
-tbody tr:nth-child(12) { animation-delay: 0.60s; }
-tbody tr:nth-child(13) { animation-delay: 0.65s; }
-tbody tr:nth-child(14) { animation-delay: 0.70s; }
-tbody tr:nth-child(15) { animation-delay: 0.75s; }
-tbody tr:nth-child(16) { animation-delay: 0.80s; }
-tbody tr:nth-child(17) { animation-delay: 0.85s; }
-tbody tr:nth-child(18) { animation-delay: 0.90s; }
-tbody tr:nth-child(19) { animation-delay: 0.95s; }
-tbody tr:nth-child(20) { animation-delay: 1.00s; }
-tbody tr:nth-child(21) { animation-delay: 1.05s; }
-tbody tr:nth-child(22) { animation-delay: 1.10s; }
-tbody tr:nth-child(23) { animation-delay: 1.15s; }
-tbody tr:nth-child(24) { animation-delay: 1.20s; }
-tbody tr:nth-child(25) { animation-delay: 1.25s; }
-tbody tr:nth-child(26) { animation-delay: 1.30s; }
-tbody tr:nth-child(27) { animation-delay: 1.35s; }
-tbody tr:nth-child(28) { animation-delay: 1.40s; }
-tbody tr:nth-child(29) { animation-delay: 1.45s; }
-tbody tr:nth-child(30) { animation-delay: 1.50s; }
-tbody tr:nth-child(31) { animation-delay: 1.55s; }
-tbody tr:nth-child(32) { animation-delay: 1.60s; }
-tbody tr:nth-child(33) { animation-delay: 1.65s; }
-tbody tr:nth-child(34) { animation-delay: 1.70s; }
-tbody tr:nth-child(35) { animation-delay: 1.75s; }
-tbody tr:nth-child(36) { animation-delay: 1.80s; }
-tbody tr:nth-child(37) { animation-delay: 1.85s; }
-tbody tr:nth-child(38) { animation-delay: 1.90s; }
-tbody tr:nth-child(39) { animation-delay: 1.95s; }
-tbody tr:nth-child(40) { animation-delay: 2.00s; }
+tbody tr:nth-child(2)  { animation-delay: 0.08s; }
+tbody tr:nth-child(3)  { animation-delay: 0.11s; }
+/* ... (40まで書くと長いので省略、CSSの仕組み上これだけでも十分綺麗に見えます) ... */
+tbody tr:nth-child(n+4) { animation-delay: 0.15s; } /* 4番目以降はまとめて */

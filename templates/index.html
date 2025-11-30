@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>出席番号リストツール</title>
     
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#007bff">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="出席リスト">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.png') }}">
+
     <meta property="og:title" content="出席番号リストツール">
     <meta property="og:description" content="今日と翌日の日直・出席番号の当たり順を自動計算するツールです。">
     <meta property="og:type" content="website">

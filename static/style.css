@@ -108,41 +108,6 @@ body {
     transform: perspective(1000px);
 }
 
-/* ✨ 閉じるボタンのデザイン (修正済み) */
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    color: var(--text-color);
-    font-size: 1.8em;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    line-height: 1;
-    opacity: 0.6;
-    transition: all 0.2s;
-    box-shadow: none !important; /* デフォルトの影を消す */
-    
-    /* ✨ここが今回の修正点！ボタンを手前に持ってくる設定 */
-    z-index: 20;
-    transform: translateZ(50px); 
-}
-.close-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    opacity: 1;
-    transform: translateZ(50px) scale(1.1); /* ホバー時も手前位置をキープ */
-}
-body.dark-mode .close-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
 @media (min-width: 768px) {
     .main-grid {
         display: grid;
@@ -347,3 +312,48 @@ tbody tr:nth-child(1) { animation-delay: 0.1s; }
 tbody tr:nth-child(2) { animation-delay: 0.15s; }
 tbody tr:nth-child(3) { animation-delay: 0.2s; }
 tbody tr:nth-child(n+4) { animation-delay: 0.25s; }
+
+/* ========================================= */
+/* ✨ 閉じるボタンのデザイン (修正済み)      */
+/* ========================================= */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.8em;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.6;
+    transition: all 0.2s;
+    box-shadow: none !important;
+    
+    z-index: 20;
+    transform: translateZ(50px); 
+}
+
+.close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    opacity: 1;
+    transform: translateZ(50px) scale(1.1);
+}
+
+/* ✨ここが今回の修正点！ ダークモード時の背景と影を強制的に消す */
+body.dark-mode .close-btn {
+    color: #ffffff;
+    background: transparent; /* 背景色を消す */
+    box-shadow: none; /* 影を消す */
+}
+
+body.dark-mode .close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

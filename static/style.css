@@ -25,23 +25,12 @@ body.dark-mode {
     --highlight-text: #ffffff;
 }
 
-/* ✨ カスタムスクロールバー (ここが新機能！) */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(100, 100, 100, 0.3);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 100, 100, 0.5);
-}
-body.dark-mode ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-}
+/* ✨スクロールバー */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100, 100, 100, 0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(100, 100, 100, 0.5); }
+body.dark-mode ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
 
 /* ========================================= */
 /* 🌊 2. 背景とオーブ                        */
@@ -114,8 +103,6 @@ body {
     box-shadow: var(--glass-shadow);
     padding: 25px;
     margin-bottom: 30px;
-    
-    /* ✨ 3Dチルト用の設定 */
     transform-style: preserve-3d;
     transform: perspective(1000px);
 }
@@ -144,8 +131,6 @@ h1 {
     align-items: baseline;
     justify-content: center;
     gap: 10px;
-    
-    /* 3D効果で文字を少し浮かせる */
     transform: translateZ(20px);
 }
 
@@ -166,7 +151,7 @@ form {
     display: flex;
     gap: 10px;
     justify-content: center;
-    transform: translateZ(30px); /* フォームを浮き上がらせる */
+    transform: translateZ(30px);
 }
 input[type="date"] {
     padding: 12px;
@@ -195,19 +180,52 @@ button {
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.2s;
     box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+    
+    /* ✨ローディング表示のための設定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px; /* サイズが変わらないように固定 */
 }
 body.dark-mode button {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     box-shadow: 0 4px 10px rgba(0, 242, 254, 0.3);
 }
 button:active { transform: scale(0.95); }
+/* ボタン無効化時（ローディング中） */
+button:disabled {
+    opacity: 0.8;
+    cursor: wait;
+}
+
+/* ✨ローディングスピナーのデザイン */
+.spinner {
+    display: none; /* デフォルトでは非表示 */
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ローディング中にクラスが付与されたら */
+button.loading .btn-text {
+    display: none; /* 文字を消す */
+}
+button.loading .spinner {
+    display: block; /* スピナーを表示 */
+}
 
 table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
     margin-top: 10px;
-    transform: translateZ(20px); /* テーブルを浮き上がらせる */
+    transform: translateZ(20px);
 }
 th {
     padding: 10px;
@@ -251,7 +269,7 @@ tr.highlight td:first-child::before {
     width: 100%;
     margin-top: 20px;
     padding: 12px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.2);
     border: 1px solid var(--text-color);
     color: var(--text-color);
     border-radius: 30px;
@@ -262,7 +280,7 @@ tr.highlight td:first-child::before {
 }
 .copy-btn:hover {
     background: var(--text-color);
-    color: var(--bg-color);
+    color: var(--glass-bg);
 }
 .copy-btn.copied {
     background: #4cd964;
@@ -289,7 +307,7 @@ tr.highlight td:first-child::before {
     align-items: center;
     justify-content: center;
     padding: 0;
-}
+}S
 
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
@@ -299,5 +317,5 @@ tr.highlight td:first-child::before {
 tbody tr { opacity: 0; animation: fadeInUp 0.4s ease-out forwards; }
 tbody tr:nth-child(1) { animation-delay: 0.1s; }
 tbody tr:nth-child(2) { animation-delay: 0.15s; }
-tbody tr:nth-child(3) { animation-delay: 0.2s; }
-tbody tr:nth-child(n+4) { animation-delay: 0.25s; }
+tbody tr:nth-child(3) { animation-delay: 0.2s; }S
+tbody tr:nth-child(n+4) { animation-delay: 0.25s; }S

@@ -25,7 +25,7 @@ body.dark-mode {
     --highlight-text: #ffffff;
 }
 
-/* ✨スクロールバー */
+/* スクロールバー */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(100, 100, 100, 0.3); border-radius: 10px; }
@@ -95,6 +95,7 @@ body {
 /* 🧊 3. グラスモーフィズム                  */
 /* ========================================= */
 .glass-card {
+    position: relative; /* 閉じるボタンの配置基準 */
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -105,6 +106,37 @@ body {
     margin-bottom: 30px;
     transform-style: preserve-3d;
     transform: perspective(1000px);
+}
+
+/* ✨ 閉じるボタンのデザイン */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.8em;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.6;
+    transition: all 0.2s;
+    box-shadow: none !important; /* デフォルトの影を消す */
+}
+.close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    opacity: 1;
+    transform: scale(1.1);
+}
+body.dark-mode .close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 @media (min-width: 768px) {
@@ -181,26 +213,23 @@ button {
     transition: transform 0.1s, box-shadow 0.2s;
     box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
     
-    /* ✨ローディング表示のための設定 */
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 80px; /* サイズが変わらないように固定 */
+    min-width: 80px; 
 }
 body.dark-mode button {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     box-shadow: 0 4px 10px rgba(0, 242, 254, 0.3);
 }
 button:active { transform: scale(0.95); }
-/* ボタン無効化時（ローディング中） */
 button:disabled {
     opacity: 0.8;
     cursor: wait;
 }
 
-/* ✨ローディングスピナーのデザイン */
 .spinner {
-    display: none; /* デフォルトでは非表示 */
+    display: none;
     width: 20px;
     height: 20px;
     border: 3px solid rgba(255, 255, 255, 0.3);
@@ -212,13 +241,8 @@ button:disabled {
     to { transform: rotate(360deg); }
 }
 
-/* ローディング中にクラスが付与されたら */
-button.loading .btn-text {
-    display: none; /* 文字を消す */
-}
-button.loading .spinner {
-    display: block; /* スピナーを表示 */
-}
+button.loading .btn-text { display: none; }
+button.loading .spinner { display: block; }
 
 table {
     width: 100%;
@@ -307,7 +331,7 @@ tr.highlight td:first-child::before {
     align-items: center;
     justify-content: center;
     padding: 0;
-}S
+}
 
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
@@ -317,5 +341,5 @@ tr.highlight td:first-child::before {
 tbody tr { opacity: 0; animation: fadeInUp 0.4s ease-out forwards; }
 tbody tr:nth-child(1) { animation-delay: 0.1s; }
 tbody tr:nth-child(2) { animation-delay: 0.15s; }
-tbody tr:nth-child(3) { animation-delay: 0.2s; }S
-tbody tr:nth-child(n+4) { animation-delay: 0.25s; }S
+tbody tr:nth-child(3) { animation-delay: 0.2s; }
+tbody tr:nth-child(n+4) { animation-delay: 0.25s; }

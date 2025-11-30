@@ -58,7 +58,9 @@
         </div>
 
         {% if search_result %}
-        <div class="search-result-area glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div id="searchResultArea" class="search-result-area glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+            <button id="closeSearchBtn" class="close-btn" aria-label="閉じる">×</button>
+            
             <h1>{{ search_result.month }}月{{ search_result.day }}日 <span class="small-text">のリスト</span></h1>
             <table id="searchTable">
                 <thead>
@@ -110,16 +112,32 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // ✨ 読み込み中（ローディング）機能
+            // 読み込み中（ローディング）機能
             const searchForm = document.getElementById('searchForm');
             const searchBtn = document.getElementById('searchBtn');
 
             if (searchForm) {
                 searchForm.addEventListener('submit', () => {
-                    // ボタンを「読み込み中」状態にする
                     searchBtn.classList.add('loading');
-                    // 二重送信防止のためにボタンを無効化
                     searchBtn.disabled = true; 
+                });
+            }
+
+            // ✨ 閉じるボタン機能
+            const closeSearchBtn = document.getElementById('closeSearchBtn');
+            const searchResultArea = document.getElementById('searchResultArea');
+
+            if (closeSearchBtn && searchResultArea) {
+                closeSearchBtn.addEventListener('click', () => {
+                    // ふわっと消えるアニメーション
+                    searchResultArea.style.opacity = '0';
+                    searchResultArea.style.transform = 'translateY(-20px)';
+                    searchResultArea.style.transition = 'opacity 0.3s, transform 0.3s';
+                    
+                    // アニメーションが終わったら完全に消す
+                    setTimeout(() => {
+                        searchResultArea.style.display = 'none';
+                    }, 300);
                 });
             }
 

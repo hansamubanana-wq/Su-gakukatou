@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>出席番号リストツール</title>
     
+    <meta property="og:title" content="出席番号リストツール">
+    <meta property="og:description" content="今日と翌日の日直・出席番号の当たり順を自動計算するツールです。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.png', _external=True) }}">
+    <meta property="og:site_name" content="出席番号リストツール">
+    <meta name="twitter:card" content="summary">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -103,11 +111,10 @@
                 });
             });
 
-            // --- ✨ダークモード切り替え機能 ---
+            // --- ダークモード切り替え機能 ---
             const toggleButton = document.getElementById('theme-toggle');
             const body = document.body;
 
-            // 保存された設定を読み込む
             const currentTheme = localStorage.getItem('theme');
             if (currentTheme === 'dark') {
                 body.classList.add('dark-mode');
@@ -117,7 +124,6 @@
             toggleButton.addEventListener('click', () => {
                 body.classList.toggle('dark-mode');
                 
-                // アイコンの切り替えと設定の保存
                 if (body.classList.contains('dark-mode')) {
                     toggleButton.textContent = '☀️';
                     localStorage.setItem('theme', 'dark');

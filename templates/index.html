@@ -46,7 +46,7 @@
 
     <div class="app-wrapper">
         
-        <div class="search-container glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div class="search-container glass-card js-tilt" data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
             <h2>📅 日付を指定して調べる</h2>
             <form method="POST" id="searchForm">
                 <input type="date" name="target_date" required>
@@ -58,9 +58,8 @@
         </div>
 
         {% if search_result %}
-        <div id="searchResultArea" class="search-result-area glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        <div id="searchResultArea" class="search-result-area glass-card">
             <button id="closeSearchBtn" class="close-btn" aria-label="閉じる">×</button>
-            
             <h1>{{ search_result.month }}月{{ search_result.day }}日 <span class="small-text">のリスト</span></h1>
             <table id="searchTable">
                 <thead>
@@ -80,7 +79,7 @@
 
         <div class="main-grid">
             
-            <section class="glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+            <section class="glass-card">
                 <h1>今日 <span class="small-text">{{ today.month }}/{{ today.day }}</span></h1>
                 <table id="todayTable">
                     <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
@@ -93,7 +92,7 @@
                 <button class="copy-btn" data-target="todayTable">コピー</button>
             </section>
 
-            <section class="glass-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+            <section class="glass-card">
                 <h1>翌日 <span class="small-text">{{ tomorrow.month }}/{{ tomorrow.day }}</span></h1>
                 <table id="tomorrowTable">
                     <thead><tr><th>順番</th><th>出席番号</th></tr></thead>
@@ -112,6 +111,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
+            // VanillaTilt の初期化（PCのみ）
+            // リストからクラスを外したので、検索ボックスだけに適用されます
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (!isMobile) {
+                VanillaTilt.init(document.querySelectorAll(".js-tilt"), {
+                    max: 5,
+                    speed: 400,
+                    glare: true,
+                    "max-glare": 0.2
+                });
+            }
+
             // 読み込み中（ローディング）機能
             const searchForm = document.getElementById('searchForm');
             const searchBtn = document.getElementById('searchBtn');
@@ -123,18 +134,15 @@
                 });
             }
 
-            // ✨ 閉じるボタン機能
+            // 閉じるボタン機能
             const closeSearchBtn = document.getElementById('closeSearchBtn');
             const searchResultArea = document.getElementById('searchResultArea');
 
             if (closeSearchBtn && searchResultArea) {
                 closeSearchBtn.addEventListener('click', () => {
-                    // ふわっと消えるアニメーション
                     searchResultArea.style.opacity = '0';
                     searchResultArea.style.transform = 'translateY(-20px)';
                     searchResultArea.style.transition = 'opacity 0.3s, transform 0.3s';
-                    
-                    // アニメーションが終わったら完全に消す
                     setTimeout(() => {
                         searchResultArea.style.display = 'none';
                     }, 300);

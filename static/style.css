@@ -1,56 +1,71 @@
 /* ========================================= */
-/* 🍎 1. Apple風カラーパレット & 変数        */
+/* 🍎 1. カラーパレット & 変数 (リッチ版)    */
 /* ========================================= */
 :root {
-    /* ライトモード: Appleのような清潔な白とグレー */
-    --bg-color: #f5f5f7;
+    /* ライトモード */
+    --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); /* パステル系の美しいグラデーション */
     --text-primary: #1d1d1f;
     --text-secondary: #86868b;
     
-    /* カード: 圧倒的な透明感とボケ味 */
-    --card-bg: rgba(255, 255, 255, 0.72);
-    --card-border: 1px solid rgba(255, 255, 255, 0.8);
-    --card-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0,0,0,0.02);
+    /* カード: 強いガラス感 */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     
-    /* アクセント: Apple Blue */
+    /* アクセント: 鮮やかなブルー */
     --accent-color: #0071e3;
     --accent-gradient: linear-gradient(135deg, #0071e3 0%, #4facfe 100%);
     
-    /* 王冠のゴールド */
+    /* ゴールド */
     --gold-bg: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
     --gold-text: #5a3e00;
 }
 
 body.dark-mode {
-    /* ダークモード: 深い黒と環境光 */
-    --bg-color: #000000;
+    /* ダークモード: 深海のようなグラデーション */
+    --bg-gradient: linear-gradient(120deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
     --text-primary: #f5f5f7;
-    --text-secondary: #86868b;
+    --text-secondary: #a1a1a6;
     
-    --card-bg: rgba(28, 28, 30, 0.72);
-    --card-border: 1px solid rgba(255, 255, 255, 0.1);
-    --card-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+    --glass-bg: rgba(20, 20, 20, 0.7);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
     
     --accent-color: #2997ff;
     --accent-gradient: linear-gradient(135deg, #2997ff 0%, #0071e3 100%);
 }
 
+/* スクロールバー (極細・モダン) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+body.dark-mode ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+
 /* ========================================= */
-/* 🌌 2. アンビエント背景 (オーロラ)         */
+/* 🌊 2. 背景アニメーション                  */
 /* ========================================= */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans JP", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans JP", sans-serif;
     margin: 0;
-    padding: 40px 20px;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
+    padding: 20px;
     min-height: 100vh;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased; /* 文字をApple製品のように滑らかに */
-    transition: background-color 0.5s ease;
+    color: var(--text-primary);
+    
+    /* 動く背景 */
+    background: var(--bg-gradient);
+    background-size: 200% 200%;
+    animation: gradientBG 15s ease infinite;
+    
+    -webkit-font-smoothing: antialiased;
 }
 
-/* 背景のボヤッとした光 */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* オーブ (背景の光) */
 .background-orbs {
     position: fixed;
     top: 0;
@@ -61,88 +76,86 @@ body {
     overflow: hidden;
     pointer-events: none;
 }
-
 .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px); /* 強いぼかしで「光」に見せる */
-    opacity: 0.5;
-    animation: float 25s infinite ease-in-out alternate;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out;
 }
-
-/* 光の配置 */
-.orb-1 { width: 60vw; height: 60vw; background: #0071e3; top: -20%; left: -20%; opacity: 0.2; }
-.orb-2 { width: 50vw; height: 50vw; background: #ac32e4; bottom: -10%; right: -10%; opacity: 0.15; animation-delay: -5s; }
-.orb-3 { width: 40vw; height: 40vw; background: #2997ff; top: 40%; left: 30%; opacity: 0.15; animation-delay: -10s; }
+.orb-1 { width: 60vw; height: 60vw; background: #a18cd1; top: -10%; left: -10%; }
+.orb-2 { width: 50vw; height: 50vw; background: #fbc2eb; bottom: -10%; right: -10%; animation-delay: -5s; }
 
 @keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, -30px) scale(1.1); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.1); }
 }
 
-/* コンテンツ幅制限 */
 .app-wrapper {
-    max-width: 980px; /* Appleサイトの標準的な幅 */
+    max-width: 1000px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    padding-bottom: 60px;
 }
 
 /* ========================================= */
-/* 🍱 3. Bento Grid (カードデザイン)         */
+/* 🧊 3. グラスモーフィズム カード           */
 /* ========================================= */
 .glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(20px); /* すりガラス */
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px); /* 強いぼかし */
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px; /* 大きめの角丸 */
-    border: var(--card-border);
-    box-shadow: var(--card-shadow);
+    border-radius: 24px;
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
     padding: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    position: relative;
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* PCレイアウト：綺麗なグリッド */
+/* PCレイアウト */
 @media (min-width: 768px) {
     .main-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
+        align-items: start;
     }
     .glass-card { margin-bottom: 0; height: 100%; }
     .search-container, .search-result-area { margin-bottom: 24px; }
 }
 
 /* ========================================= */
-/* 📝 4. タイポグラフィ & パーツ             */
+/* 📝 4. 各要素のデザイン                    */
 /* ========================================= */
 
-/* 巨大なタイトル */
+/* タイトル */
 h1 {
-    font-size: 2.2rem; /* Apple並みに大きく */
-    font-weight: 700;
+    font-size: 1.6rem;
     text-align: center;
     margin: 0 0 20px 0;
-    letter-spacing: -0.02em; /* 文字を少し詰めるのがApple流 */
-    line-height: 1.1;
+    color: var(--text-primary);
+    font-weight: 800;
+    letter-spacing: -0.02em;
 }
 
 .small-text {
-    font-size: 0.5em;
-    font-weight: 500;
+    font-size: 0.6em;
+    font-weight: 600;
     color: var(--text-secondary);
-    display: block;
-    margin-top: 5px;
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
-/* 検索ボックス */
+/* 検索エリア */
 .search-container { text-align: center; padding: 40px; }
 .search-container h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
     margin-top: 0;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 form {
@@ -153,8 +166,8 @@ form {
 }
 
 input[type="date"] {
-    padding: 14px 20px;
-    font-size: 1.1rem;
+    padding: 12px 16px;
+    font-size: 1rem;
     border-radius: 12px;
     border: 1px solid rgba(0,0,0,0.1);
     background: rgba(255,255,255,0.8);
@@ -162,40 +175,37 @@ input[type="date"] {
     font-family: inherit;
     font-weight: 600;
     outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
     transition: all 0.2s;
-}
-input[type="date"]:focus {
-    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.3); /* フォーカス時の青い光 */
-    border-color: var(--accent-color);
 }
 body.dark-mode input[type="date"] {
     background: rgba(255,255,255,0.1);
     border-color: rgba(255,255,255,0.1);
 }
+input[type="date"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+}
 
-/* ボタン (Apple Button Style) */
+/* ボタン (グラデーション) */
 button {
-    padding: 14px 28px;
-    background: var(--accent-color);
+    padding: 12px 24px;
+    background: var(--accent-gradient);
     color: white;
     border: none;
-    border-radius: 20px; /* 丸みを強く */
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 14px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: transform 0.1s, box-shadow 0.2s;
     box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-    
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 80px;
 }
-button:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
-}
-button:active { transform: scale(0.96); }
+button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4); }
+button:active { transform: translateY(0); }
+button:disabled { opacity: 0.7; cursor: wait; transform: none; }
 
 /* ローディングスピナー */
 .spinner {
@@ -211,65 +221,84 @@ button:active { transform: scale(0.96); }
 button.loading .btn-text { display: none; }
 button.loading .spinner { display: block; }
 
-/* テーブル (リスト) */
+/* テーブル */
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 8px; /* 行間を空ける */
+    border-spacing: 0 8px; /* 行間を広げてカード感を出す */
     margin-top: 10px;
 }
 
 th {
-    padding: 12px;
+    padding: 10px;
     font-size: 0.8rem;
     color: var(--text-secondary);
-    text-transform: uppercase; /* 英語なら大文字にするスタイル */
-    letter-spacing: 0.05em;
-    font-weight: 600;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    opacity: 0.8;
 }
 
 td {
-    background: rgba(120, 120, 120, 0.05); /* 超薄いグレー */
+    background: rgba(255,255,255,0.5); /* 行ごとの背景 */
     padding: 14px;
     text-align: center;
     font-weight: 600;
-    transition: transform 0.2s;
-    font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
+    font-size: 1rem;
+    transition: transform 0.2s, background-color 0.2s;
+    /* 数字の幅を揃える */
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
 }
+body.dark-mode td { background: rgba(255,255,255,0.05); }
 
-/* 行の左端と右端を丸く */
+/* 行のホバーエフェクト */
+tr:hover td {
+    transform: scale(1.02);
+    background: rgba(255,255,255,0.9);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+body.dark-mode tr:hover td { background: rgba(255,255,255,0.15); }
+
+/* 行の角丸 */
 tr td:first-child { border-radius: 12px 0 0 12px; }
 tr td:last-child { border-radius: 0 12px 12px 0; }
 
-/* 👑 1位のスペシャル演出 (Apple Gold) */
+/* 👑 1位の演出 */
 tr.highlight td {
     background: var(--gold-bg);
     color: var(--gold-text);
     font-weight: 800;
-    box-shadow: 0 4px 12px rgba(253, 185, 49, 0.3); /* 金色の光 */
+    font-size: 1.1em;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); /* 光らせる */
 }
 tr.highlight td:first-child::before {
-    content: " "; /* あえてAppleロゴ風の記号や王冠 */
-    content: "👑 ";
-    margin-right: 4px;
+    content: "👑";
+    margin-right: 6px;
 }
 
 /* コピーボタン */
 .copy-btn {
     width: 100%;
     margin-top: 20px;
+    padding: 14px;
     background: transparent;
-    border: 1px solid var(--accent-color);
+    border: 2px solid var(--accent-color);
     color: var(--accent-color);
+    border-radius: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
     box-shadow: none;
 }
 .copy-btn:hover {
     background: var(--accent-color);
     color: white;
-    transform: none;
+    transform: translateY(-2px);
 }
 .copy-btn.copied {
-    background: #34c759; /* Apple Green */
+    background: #34c759;
     border-color: #34c759;
     color: white;
 }
@@ -279,27 +308,29 @@ tr.highlight td:first-child::before {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(120,120,120,0.1);
+    background: rgba(0,0,0,0.05);
     border: none;
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    font-size: 1.2rem;
     color: var(--text-secondary);
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
     transition: all 0.2s;
     z-index: 10;
 }
 .close-btn:hover {
-    background: rgba(120,120,120,0.2);
-    color: var(--text-primary);
+    background: rgba(0,0,0,0.1);
     transform: scale(1.1);
+    color: var(--text-primary);
 }
+body.dark-mode .close-btn { background: rgba(255,255,255,0.1); }
+body.dark-mode .close-btn:hover { background: rgba(255,255,255,0.2); }
 
-/* テーマ切り替えボタン (右下にフロート) */
+/* テーマ切り替えボタン (フローティング) */
 .theme-switch-wrapper {
     position: fixed;
     bottom: 30px;
@@ -310,31 +341,27 @@ tr.highlight td:first-child::before {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--card-bg);
-    border: 1px solid rgba(0,0,0,0.1);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    font-size: 1.6rem;
-    backdrop-filter: blur(20px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    transition: transform 0.3s;
 }
-body.dark-mode #theme-toggle {
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-}
+#theme-toggle:hover { transform: scale(1.1) rotate(15deg); }
 
-/* スクロールバー (極細) */
-::-webkit-scrollbar { width: 0px; background: transparent; } /* いっそ見えなくするのもApple流 */
-
-/* ✨ アニメーション (フェードアップ) */
+/* アニメーション */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-.glass-card { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; } /* Apple特有の慣性スクロールのような動き */
-tbody tr { opacity: 0; animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.glass-card { animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+tbody tr { opacity: 0; animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 tbody tr:nth-child(1) { animation-delay: 0.1s; }
 tbody tr:nth-child(2) { animation-delay: 0.15s; }
 tbody tr:nth-child(3) { animation-delay: 0.2s; }
